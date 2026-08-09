@@ -1,37 +1,20 @@
 class Solution {
 public:
     int maxDistToClosest(vector<int>& seats) {
-        vector<int> leftscan;
-        vector<int> rightscan;
-        int n = seats.size();
-        int counter = 0;
-        for(int i = 0; i < n;i++)
-        {
-            if(seats[i] != 0)
-            counter = 0;
-            else
-            counter++;
-            leftscan.push_back(counter);
-        }
+        int last = -1;
 
-        for(int i = n-1; i >= 0;i--)
-        {
-            if(seats[i] != 0)
-            counter = 0;
-            else
-            counter++;
-            rightscan.push_back(counter);
-        }
-        reverse(rightscan.begin(),rightscan.end());
+        int n =  seats.size();
         int res = 0;
-        for(int i = 0; i < n;i++)
+        for(int i = 0;i < n;i++)
         {
-            res = max(res,min(leftscan[i],rightscan[i]));
+            if(seats[i] != 0){
+                res = last < 0? i: max(res,(i-last) / 2);
+                last = i;
+                cout << i << endl;
+                }
+
         }
-       
-        return max( max( res , leftscan[n-1]),rightscan[0]);
-
-
-
+        if(seats[n-1]  == 0) res= max(res,n-1-last);
+        return res ;
     }
 };
